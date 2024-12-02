@@ -1,0 +1,561 @@
+<html>
+<head>
+    <!-- Thank You Message -->
+    <div class="w-full max-w-6xl mt-8 px-4">
+        <div class="border rounded-lg p-4 bg-white shadow-lg text-center">
+            <p class="text-lg font-semibold text-gray-800">Halo! Assalamualaikum.</p>
+        </div>
+    </div>
+
+    <title>ALMAS exclusive</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Roboto:wght@400;500&family=Montserrat:wght@700&family=Montaser&display=swap" rel="stylesheet"/>
+    <style>
+        body {
+            font-family: 'Montaser', sans-serif;
+            background-color: #ffffff;
+        }
+        h1, h2 {
+            font-family: 'Montserrat', sans-serif;
+        }
+    
+        .product-title {
+            font-family: 'Montaser', sans-serif;
+        }
+        .zoomed {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 50;
+            max-width: 90%;
+            max-height: 90%;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 40;
+        }
+    </style>
+    <script>
+        let cart = [];
+        let products = [
+            { name: 'Gelang Bangle Lapis Emas Tahan Lama Anti Karat', price: 39000 },
+            { name: 'Gelang Keroncong Lapis Emas 1 pcs', price: 10000 },
+            { name: 'Cincin Lapis Emas Ulir Full Ukir', price: 28000 },
+            { name: 'Gelang Titanium Anti Pudar All Size', price: 39000 },
+            { name: 'Tembaga Murni seperti emas 24K model tengah 4 Koin', price: 55000 },
+            { name: 'Gelang Bangle Lapis Emas Tahan Lama Anti Karat', price: 39000 },
+            { name: 'Gelang Rica Titanium Anti Luntur dan Anti Karat', price: 39000 },
+            { name: 'Cincin Rantai Lapis Emas Mirip Emas Pegadaian', price: 21000 },
+            { name: 'Gelang Bambu Lapis Emas All Size emas Tiangkok', price: 45000 },
+            { name: 'Cincin Lapis Emas Kuning Panjang Model Bunga 4 Tangkai', price: 32000 },
+            { name: 'Gelang kendari Cantik Lapis Emas Model Bunga import', price: 60000 },
+            { name: 'Gelang dengan Cincin Lapis Emas 18k anti karat', price: 39000 },
+            { name: 'Gelang dengan Cincin lapis Emas Model Tikar Kecil', price: 39000 },
+            { name: 'Kalung Sultan Lapis emas 3D Mengkilap Luar Dalam', price: 78000 },
+            { name: 'Gelang Tikar Lapis Emas Jumbo Kait Nyaman Detail Seperti emas', price: 50000 },
+            { name: 'Kalung Titanium Anti LUntur Anti Karat Dengan Liotin Mutiara Mengkilap', price: 29000 },
+            { name: 'Gelang Kendari Jumbo + Cincin Jumbo Mirip Emas Asli', price: 225000 },
+            { name: 'Lapis Emas 24karat 2x sepuh jaminan tahan lama Gelang Kendari Dengan Cincin Jumbo', price: 220000 },
+            { name: 'Lapis Emas 24K Kuning Gelang Bangle Lapis Emas di jamin Tahan Lama Anti Karat', price: 95000 },
+            { name: 'Full lapis emas 24k tahan lama di jamin Gelang Bangle Lapis Emas Jumbo', price: 120000 },
+            { name: 'Kalung Lapis Emas 24K Susun 3 Model bunga lingkaran sudah di sepuh kembali', price: 190000 },
+            { name: 'Product Name 2', price: 150000 },
+            { name: 'Product Name 3', price: 200000 },
+            { name: 'Product Name 4', price: 250000 },
+            { name: 'Product Name 5', price: 300000 },
+            { name: 'Product Name 2', price: 150000 },
+            { name: 'Product Name 3', price: 200000 },
+            { name: 'Product Name 4', price: 250000 },
+            { name: 'Product Name 5', price: 300000 },
+        ];
+
+        function addToCart(productName, price) {
+            cart.push({ productName, price });
+            alert(`${productName} telah ditambahkan ke keranjang.`);
+            updateCart();
+            document.getElementById('address-form').classList.remove('hidden');
+            document.getElementById('cart-section').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function removeFromCart(index) {
+            cart.splice(index, 1);
+            updateCart();
+        }
+
+        function updateCart() {
+            const cartContainer = document.getElementById('cart-container');
+            cartContainer.innerHTML = '';
+            let total = 0;
+            cart.forEach((item, index) => {
+                const cartItem = document.createElement('div');
+                cartItem.className = 'flex justify-between items-center p-2 border-b';
+                cartItem.innerHTML = `
+                    <span>${item.productName}</span>
+                    <span>Rp ${item.price}</span>
+                    <button class="text-red-500" onclick="removeFromCart(${index})">Hapus</button>
+                `;
+                cartContainer.appendChild(cartItem);
+                total += item.price;
+            });
+
+            const shippingInfo = document.createElement('div');
+            shippingInfo.className = 'flex justify-between items-center p-2 border-t mt-4';
+            shippingInfo.innerHTML = `
+                <span>Ongkir</span>
+                <span>Rp 15.000</span>
+            `;
+            cartContainer.appendChild(shippingInfo);
+
+            total += 15000; // Adding shipping cost
+
+            const totalInfo = document.createElement('div');
+            totalInfo.className = 'flex justify-between items-center p-2 border-t mt-4';
+            totalInfo.innerHTML = `
+                <span>Total Belanja</span>
+                <span>Rp ${total}</span>
+            `;
+            cartContainer.appendChild(totalInfo);
+        }
+
+        function showCart() {
+            document.getElementById('cart-section').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function sendToWhatsApp() {
+            const name = document.getElementById('name').value;
+            const province = document.getElementById('province').value;
+            const regency = document.getElementById('regency').value;
+            const city = document.getElementById('city').value;
+            const street = document.getElementById('street').value;
+            const houseDetails = document.getElementById('house-details').value;
+
+            let cartDetails = cart.map(item => `${item.productName} - Rp ${item.price}`).join('\n');
+            let total = cart.reduce((sum, item) => sum + item.price, 0) + 15000;
+
+            const message = `Nama: ${name}\nProvinsi: ${province}\nKabupaten: ${regency}\nKota: ${city}\nNama Jalan: ${street}\nDetail Rumah: ${houseDetails}\n\nKeranjang:\n${cartDetails}\n\nOngkir: Rp 15.000\nTotal Belanja: Rp ${total}\n\nKirim Nota COD ini nah kak, biar ku proses Pengataran ta' 4-5 hari, kami di usahakan 3 hari sampai kak🫶🏻`;
+
+            const whatsappUrl = `https://wa.me/+6289630920692?text=${encodeURIComponent(message)}`;
+            window.open(whatsappUrl, '_blank');
+        }
+
+        window.alert = function(message) {
+            const alertBox = document.createElement('div');
+            alertBox.className = 'fixed top-0 left-0 w-full h-full flex items-center justify-center bg-black bg-opacity-50';
+            alertBox.innerHTML = `
+                <div class="bg-white p-4 rounded shadow-lg text-center">
+                    <p class="mb-4">${message}</p>
+                    <button class="bg-orange-600 text-white px-4 py-2 rounded" onclick="this.parentElement.parentElement.remove()">OK</button>
+                </div>
+            `;
+            document.body.appendChild(alertBox);
+        };
+
+        function zoomImage(src) {
+            const overlay = document.createElement('div');
+            overlay.className = 'overlay';
+            overlay.onclick = function() {
+                document.body.removeChild(overlay);
+                document.body.removeChild(zoomedImage);
+            };
+
+            const zoomedImage = document.createElement('img');
+            zoomedImage.src = src;
+            zoomedImage.className = 'zoomed';
+
+            document.body.appendChild(overlay);
+            document.body.appendChild(zoomedImage);
+        }
+    </script>
+</head>
+<body class="bg-white flex flex-col items-center justify-center min-h-screen">
+    <!-- Logo -->
+    <div class="flex flex-col items-center mt-4">
+        <img alt="Black emblem with the letter A in the center" class="w-24 h-24 rounded-full border-4 border-black shadow-lg" height="100" src="https://storage.googleapis.com/a1aa/image/hfQfGu0tzrs8uEjcHqJglqUjapxReciwSg14KnWXOTFogfWPB.jpg" width="100"/>
+        <h1 class="text-3xl font-extrabold mt-4 text-black">ALMAS exclusive</h1>
+    </div>
+    <!-- Cart -->
+    <div class="w-full flex justify-center items-center mt-4">
+        <div class="flex items-center space-x-4">
+            <i class="fas fa-shopping-bag text-2xl text-orange-600 cursor-pointer" onclick="showCart()"></i>
+        </div>
+    </div>
+    <!-- Product Section -->
+    <div class="w-full max-w-6xl mt-8 grid grid-cols-2 gap-6 px-4 md:grid-cols-3 lg:grid-cols-4" id="product-container">
+        <!-- Product Item -->
+        <div class="border rounded-lg p-4 flex flex-col items-center bg-white shadow-lg transform transition duration-500 hover:scale-105">
+            <img alt="Product image showing a detailed view of the product" class="w-40 h-40 object-cover mb-4 rounded-lg shadow-md cursor-pointer" height="160" src="https://github.com/ALMASexclusive/foto/blob/daf021afb0b32de7322a103b5c10df66861758d7/bangle5.jpeg?raw=true" width="160" onclick="zoomImage(this.src)"/>
+            <h2 class="text-sm text-black product-title mb-4">Gelang Bangle Lapis Emas Tahan Lama Anti Karat</h2>
+            <p class="text-orange-600 font-bold mt-2 mb-4">Rp 39.000</p>
+            <p class="text-gray-500">Ongkir 15.000</p>
+            <p class="text-gray-500">COD bayar nanti</p>
+            <button class="mt-2 bg-orange-600 text-white px-1 py-1 text-xs rounded shadow-md hover:bg-orange-500" onclick="addToCart('Gelang Bangle Lapis Emas untuk 1 pcs', 39000)">Tambah ke Keranjang</button>
+            <div class="mt-4 grid grid-cols-2 sm:grid-cols-4 gap-2">
+                <img alt="Additional product image showing a different angle of the product" class="w-20 h-20 object-cover rounded-lg shadow-md cursor-pointer" height="80" src="https://github.com/ALMASexclusive/foto/blob/daf021afb0b32de7322a103b5c10df66861758d7/bangle1.jpeg?raw=true" width="80" onclick="zoomImage(this.src)"/>
+                <img alt="Additional product image showing a different angle of the product" class="w-20 h-20 object-cover rounded-lg shadow-md cursor-pointer" height="80" src="https://github.com/ALMASexclusive/foto/blob/daf021afb0b32de7322a103b5c10df66861758d7/bangle3.jpeg?raw=true" width="80" onclick="zoomImage(this.src)"/>
+                <img alt="Additional product image showing the product in use" class="w-20 h-20 object-cover rounded-lg shadow-md cursor-pointer" height="80" src="https://github.com/ALMASexclusive/foto/blob/daf021afb0b32de7322a103b5c10df66861758d7/bangle4.jpeg?raw=true" width="80" onclick="zoomImage(this.src)"/>
+                <img alt="Additional product image showing the product packaging" class="w-20 h-20 object-cover rounded-lg shadow-md cursor-pointer" height="80" src="https://github.com/ALMASexclusive/foto/blob/daf021afb0b32de7322a103b5c10df66861758d7/bangle2.jpeg?raw=true" width="80" onclick="zoomImage(this.src)"/>
+            </div>
+        </div>
+        <div class="border rounded-lg p-4 flex flex-col items-center bg-white shadow-lg transform transition duration-500 hover:scale-105">
+            <img alt="Product image showing a detailed view of the product" class="w-40 h-40 object-cover mb-4 rounded-lg shadow-md cursor-pointer" height="160" src="https://github.com/ALMASexclusive/foto/blob/daf021afb0b32de7322a103b5c10df66861758d7/keroncong4.jpeg?raw=true" width="160" onclick="zoomImage(this.src)"/>
+            <h2 class="text-sm text-black product-title mb-4">Gelang Keroncong Lapis Emas 1 pcs anti karat</h2>
+            <p class="text-orange-600 font-bold mt-2 mb-4">Rp 10.000</p>
+            <p class="text-gray-500">Ongkir 15.000</p>
+            <p class="text-gray-500">COD bayar nanti</p>
+            <button class="mt-2 bg-orange-600 text-white px-1 py-1 text-xs rounded shadow-md hover:bg-orange-500" onclick="addToCart('Gelang Keroncong untuk 1 pcs', 10.000)">Tambah ke Keranjang</button>
+            <div class="mt-4 grid grid-cols-2 sm:grid-cols-4 gap-2">
+                <img alt="Additional product image showing a different angle of the product" class="w-20 h-20 object-cover rounded-lg shadow-md cursor-pointer" height="80" src="https://github.com/ALMASexclusive/foto/blob/daf021afb0b32de7322a103b5c10df66861758d7/keroncong3.jpeg?raw=true" width="80" onclick="zoomImage(this.src)"/>
+                <img alt="Additional product image showing a different angle of the product" class="w-20 h-20 object-cover rounded-lg shadow-md cursor-pointer" height="80" src="https://github.com/ALMASexclusive/foto/blob/daf021afb0b32de7322a103b5c10df66861758d7/keroncong2.jpeg?raw=true" width="80" onclick="zoomImage(this.src)"/>
+                <img alt="Additional product image showing the product in use" class="w-20 h-20 object-cover rounded-lg shadow-md cursor-pointer" height="80" src="https://github.com/ALMASexclusive/foto/blob/daf021afb0b32de7322a103b5c10df66861758d7/keroncong1.jpeg?raw=true" width="80" onclick="zoomImage(this.src)"/>
+                <img alt="Additional product image showing the product packaging" class="w-20 h-20 object-cover rounded-lg shadow-md cursor-pointer" height="80" src="https://github.com/ALMASexclusive/foto/blob/daf021afb0b32de7322a103b5c10df66861758d7/keroncong4.jpeg?raw=true" width="80" onclick="zoomImage(this.src)"/>
+            </div>
+        </div>
+        <div class="border rounded-lg p-4 flex flex-col items-center bg-white shadow-lg transform transition duration-500 hover:scale-105">
+            <img alt="Product image showing a detailed view of the product" class="w-40 h-40 object-cover mb-4 rounded-lg shadow-md cursor-pointer" height="160" src="https://github.com/ALMASexclusive/foto/blob/daf021afb0b32de7322a103b5c10df66861758d7/ulir1.jpeg?raw=true" width="160" onclick="zoomImage(this.src)"/>
+            <h2 class="text-sm text-black product-title mb-4">Cincin Lapis Emas Ulir Full Ukir Anti Karat</h2>
+            <p class="text-orange-600 font-bold mt-2 mb-4">Rp 28.000</p>
+            <p class="text-gray-500">Ongkir 15.000</p>
+            <p class="text-gray-500">COD bayar nanti</p>
+            <button class="mt-2 bg-orange-600 text-white px-1 py-1 text-xs rounded shadow-md hover:bg-orange-500" onclick="addToCart('Cincin Lapis Emas Ulir Full Ukir', 28000)">Tambah ke Keranjang</button>
+            <div class="mt-4 grid grid-cols-2 sm:grid-cols-4 gap-2">
+                <img alt="Additional product image showing a different angle of the product" class="w-20 h-20 object-cover rounded-lg shadow-md cursor-pointer" height="80" src="https://github.com/ALMASexclusive/foto/blob/daf021afb0b32de7322a103b5c10df66861758d7/ulir2.jpeg?raw=true" width="80" onclick="zoomImage(this.src)"/>
+                <img alt="Additional product image showing a different angle of the product" class="w-20 h-20 object-cover rounded-lg shadow-md cursor-pointer" height="80" src="https://github.com/ALMASexclusive/foto/blob/daf021afb0b32de7322a103b5c10df66861758d7/ulir3.jpeg?raw=true" width="80" onclick="zoomImage(this.src)"/>
+                <img alt="Additional product image showing the product in use" class="w-20 h-20 object-cover rounded-lg shadow-md cursor-pointer" height="80" src="https://github.com/ALMASexclusive/foto/blob/daf021afb0b32de7322a103b5c10df66861758d7/ulir4.jpeg?raw=true" width="80" onclick="zoomImage(this.src)"/>
+                <img alt="Additional product image showing the product packaging" class="w-20 h-20 object-cover rounded-lg shadow-md cursor-pointer" height="80" src="https://github.com/ALMASexclusive/foto/blob/daf021afb0b32de7322a103b5c10df66861758d7/ulir5.jpeg?raw=true" width="80" onclick="zoomImage(this.src)"/>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Product Section -->
+<div class="w-full max-w-6xl mt-8 grid grid-cols-2 gap-6 px-4 md:grid-cols-3 lg:grid-cols-4" id="product-container">
+    <!-- Product Item -->
+    <div class="border rounded-lg p-4 flex flex-col items-center bg-white shadow-lg transform transition duration-500 hover:scale-105">
+        <img alt="Product image showing a detailed view of the product" class="w-40 h-40 object-cover mb-4 rounded-lg shadow-md cursor-pointer" height="160" src="https://github.com/ALMASexclusive/foto/blob/daf021afb0b32de7322a103b5c10df66861758d7/titanium1.jpeg?raw=true" width="160" onclick="zoomImage(this.src)"/>
+        <h2 class="text-sm text-black product-title mb-4">Gelang Titanium Anti Pudar All Size</h2>
+        <p class="text-orange-600 font-bold mt-2 mb-4">Rp 39.000</p>
+        <p class="text-gray-500">Ongkir 15.000</p>
+        <p class="text-gray-500">COD bayar nanti</p>
+        <button class="mt-2 bg-orange-600 text-white px-1 py-1 text-xs rounded shadow-md hover:bg-orange-500" onclick="addToCart('Gelang Titanium Anti Pudar All Size', 39000)">Tambah ke Keranjang</button>
+        <div class="mt-4 grid grid-cols-2 sm:grid-cols-4 gap-2">
+            <img alt="Additional product image showing a different angle of the product" class="w-20 h-20 object-cover rounded-lg shadow-md cursor-pointer" height="80" src="https://github.com/ALMASexclusive/foto/blob/daf021afb0b32de7322a103b5c10df66861758d7/titanium4.jpeg?raw=true" width="80" onclick="zoomImage(this.src)"/>
+            <img alt="Additional product image showing a different angle of the product" class="w-20 h-20 object-cover rounded-lg shadow-md cursor-pointer" height="80" src="https://github.com/ALMASexclusive/foto/blob/daf021afb0b32de7322a103b5c10df66861758d7/titanium3.jpeg?raw=true" width="80" onclick="zoomImage(this.src)"/>
+            <img alt="Additional product image showing the product in use" class="w-20 h-20 object-cover rounded-lg shadow-md cursor-pointer" height="80" src="https://github.com/ALMASexclusive/foto/blob/daf021afb0b32de7322a103b5c10df66861758d7/titanium2.jpeg?raw=true" width="80" onclick="zoomImage(this.src)"/>
+            <img alt="Additional product image showing the product packaging" class="w-20 h-20 object-cover rounded-lg shadow-md cursor-pointer" height="80" src="https://github.com/ALMASexclusive/foto/blob/daf021afb0b32de7322a103b5c10df66861758d7/titanium1.jpeg?raw=true" width="80" onclick="zoomImage(this.src)"/>
+        </div>
+    </div>
+    <div class="border rounded-lg p-4 flex flex-col items-center bg-white shadow-lg transform transition duration-500 hover:scale-105">
+        <img alt="Product image showing a detailed view of the product" class="w-40 h-40 object-cover mb-4 rounded-lg shadow-md cursor-pointer" height="160" src="https://github.com/ALMASexclusive/foto/blob/daf021afb0b32de7322a103b5c10df66861758d7/emas5.jpeg?raw=true" width="160" onclick="zoomImage(this.src)"/>
+        <h2 class="text-sm text-black product-title mb-4">Tembaga Murni seperti emas 24K model tengah 3 Koin</h2>
+        <p class="text-orange-600 font-bold mt-2 mb-4">Rp 55.000</p>
+        <p class="text-gray-500">Ongkir 15.000</p>
+        <p class="text-gray-500">COD bayar nanti</p>
+        <button class="mt-2 bg-orange-600 text-white px-1 py-1 text-xs rounded shadow-md hover:bg-orange-500" onclick="addToCart('Tembaga Murni seperti emas 24K model tengah 4 Koin', 55000)">Tambah ke Keranjang</button>
+        <div class="mt-4 grid grid-cols-2 sm:grid-cols-4 gap-2">
+            <img alt="Additional product image showing a different angle of the product" class="w-20 h-20 object-cover rounded-lg shadow-md cursor-pointer" height="80" src="https://github.com/ALMASexclusive/foto/blob/daf021afb0b32de7322a103b5c10df66861758d7/emas4.jpeg?raw=true" width="80" onclick="zoomImage(this.src)"/>
+            <img alt="Additional product image showing a different angle of the product" class="w-20 h-20 object-cover rounded-lg shadow-md cursor-pointer" height="80" src="https://github.com/ALMASexclusive/foto/blob/daf021afb0b32de7322a103b5c10df66861758d7/emas3.jpeg?raw=true" width="80" onclick="zoomImage(this.src)"/>
+            <img alt="Additional product image showing the product in use" class="w-20 h-20 object-cover rounded-lg shadow-md cursor-pointer" height="80" src="https://github.com/ALMASexclusive/foto/blob/daf021afb0b32de7322a103b5c10df66861758d7/emas2.jpeg?raw=true" width="80" onclick="zoomImage(this.src)"/>
+            <img alt="Additional product image showing the product packaging" class="w-20 h-20 object-cover rounded-lg shadow-md cursor-pointer" height="80" src="https://github.com/ALMASexclusive/foto/blob/daf021afb0b32de7322a103b5c10df66861758d7/emas1.jpeg?raw=true" width="80" onclick="zoomImage(this.src)"/>
+        </div>
+    </div>
+    <div class="border rounded-lg p-4 flex flex-col items-center bg-white shadow-lg transform transition duration-500 hover:scale-105">
+        <img alt="Product image showing a detailed view of the product" class="w-40 h-40 object-cover mb-4 rounded-lg shadow-md cursor-pointer" height="160" src="https://github.com/ALMASexclusive/foto/blob/daf021afb0b32de7322a103b5c10df66861758d7/rica1.jpeg?raw=true" width="160" onclick="zoomImage(this.src)"/>
+        <h2 class="text-sm text-black product-title mb-4">Gelang Rica Titanium Anti Luntur dan Anti Karat</h2>
+        <p class="text-orange-600 font-bold mt-2 mb-4">Rp 39.000</p>
+        <p class="text-gray-500">Ongkir 15.000</p>
+        <p class="text-gray-500">COD bayar nanti</p>
+        <button class="mt-2 bg-orange-600 text-white px-1 py-1 text-xs rounded shadow-md hover:bg-orange-500" onclick="addToCart('Gelang Rica Titanium Anti Luntur dan Anti Karat', 39000)">Tambah ke Keranjang</button>
+        <div class="mt-4 grid grid-cols-2 sm:grid-cols-4 gap-2">
+            <img alt="Additional product image showing a different angle of the product" class="w-20 h-20 object-cover rounded-lg shadow-md cursor-pointer" height="80" src="https://github.com/ALMASexclusive/foto/blob/daf021afb0b32de7322a103b5c10df66861758d7/rica2.jpeg?raw=true" width="80" onclick="zoomImage(this.src)"/>
+            <img alt="Additional product image showing a different angle of the product" class="w-20 h-20 object-cover rounded-lg shadow-md cursor-pointer" height="80" src="https://github.com/ALMASexclusive/foto/blob/daf021afb0b32de7322a103b5c10df66861758d7/rica3.jpeg?raw=true" width="80" onclick="zoomImage(this.src)"/>
+            <img alt="Additional product image showing the product in use" class="w-20 h-20 object-cover rounded-lg shadow-md cursor-pointer" height="80" src="https://github.com/ALMASexclusive/foto/blob/daf021afb0b32de7322a103b5c10df66861758d7/rica1.jpeg?raw=true" width="80" onclick="zoomImage(this.src)"/>
+            <img alt="Additional product image showing the product packaging" class="w-20 h-20 object-cover rounded-lg shadow-md cursor-pointer" height="80" src="https://github.com/ALMASexclusive/foto/blob/daf021afb0b32de7322a103b5c10df66861758d7/rica4.jpeg?raw=true" width="80" onclick="zoomImage(this.src)"/>
+        </div>
+    </div>
+</div>
+</div>
+<!-- Product Section -->
+<div class="w-full max-w-6xl mt-8 grid grid-cols-2 gap-6 px-4 md:grid-cols-3 lg:grid-cols-4" id="product-container">
+    <!-- Product Item -->
+    <div class="border rounded-lg p-4 flex flex-col items-center bg-white shadow-lg transform transition duration-500 hover:scale-105">
+        <img alt="Product image showing a detailed view of the product" class="w-40 h-40 object-cover mb-4 rounded-lg shadow-md cursor-pointer" height="160" src="https://github.com/ALMASexclusive/foto1/blob/58f2c504de6f94edf1492c6d6ce5841ab14a50cb/Crantai1.jpeg?raw=true" width="160" onclick="zoomImage(this.src)"/>
+        <h2 class="text-sm text-black product-title mb-4">Cincin Rantai Lapis Emas Mirip Emas Pegadaian</h2>
+        <p class="text-orange-600 font-bold mt-2 mb-4">Rp 21.000</p>
+        <p class="text-gray-500">Ongkir 15.000</p>
+        <p class="text-gray-500">COD bayar nanti</p>
+        <button class="mt-2 bg-orange-600 text-white px-1 py-1 text-xs rounded shadow-md hover:bg-orange-500" onclick="addToCart('Cincin Rantai Lapis Emas Mirip Emas Pegadaian', 21000)">Tambah ke Keranjang</button>
+        <div class="mt-4 grid grid-cols-2 sm:grid-cols-4 gap-2">
+            <img alt="Additional product image showing a different angle of the product" class="w-20 h-20 object-cover rounded-lg shadow-md cursor-pointer" height="80" src="https://github.com/ALMASexclusive/foto1/blob/6ec5375854e1e329cc597e7cac2305aab0463811/Crantai2.jpeg?raw=true" width="80" onclick="zoomImage(this.src)"/>
+            <img alt="Additional product image showing a different angle of the product" class="w-20 h-20 object-cover rounded-lg shadow-md cursor-pointer" height="80" src="https://github.com/ALMASexclusive/foto1/blob/6ec5375854e1e329cc597e7cac2305aab0463811/Crantai3.jpeg?raw=true" width="80" onclick="zoomImage(this.src)"/>
+            <img alt="Additional product image showing the product in use" class="w-20 h-20 object-cover rounded-lg shadow-md cursor-pointer" height="80" src="https://github.com/ALMASexclusive/foto1/blob/6ec5375854e1e329cc597e7cac2305aab0463811/Crantai4.jpeg?raw=true" width="80" onclick="zoomImage(this.src)"/>
+            <img alt="Additional product image showing the product packaging" class="w-20 h-20 object-cover rounded-lg shadow-md cursor-pointer" height="80" src="https://github.com/ALMASexclusive/foto1/blob/6ec5375854e1e329cc597e7cac2305aab0463811/Crantai5.jpeg?raw=true" width="80" onclick="zoomImage(this.src)"/>
+        </div>
+    </div>
+    <div class="border rounded-lg p-4 flex flex-col items-center bg-white shadow-lg transform transition duration-500 hover:scale-105">
+        <img alt="Product image showing a detailed view of the product" class="w-40 h-40 object-cover mb-4 rounded-lg shadow-md cursor-pointer" height="160" src="https://github.com/ALMASexclusive/foto1/blob/6ec5375854e1e329cc597e7cac2305aab0463811/Bambu5.jpeg?raw=true" width="160" onclick="zoomImage(this.src)"/>
+        <h2 class="text-sm text-black product-title mb-4">Gelang Bambu Lapis Emas All Size emas Tiangkok</h2>
+        <p class="text-orange-600 font-bold mt-2 mb-4">Rp 45.000</p>
+        <p class="text-gray-500">Ongkir 15.000</p>
+        <p class="text-gray-500">COD bayar nanti</p>
+        <button class="mt-2 bg-orange-600 text-white px-1 py-1 text-xs rounded shadow-md hover:bg-orange-500" onclick="addToCart('Gelang Bambu Lapis Emas All Size emas Tiangkok', 45000)">Tambah ke Keranjang</button>
+        <div class="mt-4 grid grid-cols-2 sm:grid-cols-4 gap-2">
+            <img alt="Additional product image showing a different angle of the product" class="w-20 h-20 object-cover rounded-lg shadow-md cursor-pointer" height="80" src="https://github.com/ALMASexclusive/foto1/blob/6ec5375854e1e329cc597e7cac2305aab0463811/Bambu4.jpeg?raw=true" width="80" onclick="zoomImage(this.src)"/>
+            <img alt="Additional product image showing a different angle of the product" class="w-20 h-20 object-cover rounded-lg shadow-md cursor-pointer" height="80" src="https://github.com/ALMASexclusive/foto1/blob/6ec5375854e1e329cc597e7cac2305aab0463811/Bambu3.jpeg?raw=true" width="80" onclick="zoomImage(this.src)"/>
+            <img alt="Additional product image showing the product in use" class="w-20 h-20 object-cover rounded-lg shadow-md cursor-pointer" height="80" src="https://github.com/ALMASexclusive/foto1/blob/6ec5375854e1e329cc597e7cac2305aab0463811/Bambu2.jpeg?raw=true" width="80" onclick="zoomImage(this.src)"/>
+            <img alt="Additional product image showing the product packaging" class="w-20 h-20 object-cover rounded-lg shadow-md cursor-pointer" height="80" src="https://github.com/ALMASexclusive/foto1/blob/6ec5375854e1e329cc597e7cac2305aab0463811/Bambu1.jpeg?raw=true" width="80" onclick="zoomImage(this.src)"/>
+        </div>
+    </div>
+    <div class="border rounded-lg p-4 flex flex-col items-center bg-white shadow-lg transform transition duration-500 hover:scale-105">
+        <img alt="Product image showing a detailed view of the product" class="w-40 h-40 object-cover mb-4 rounded-lg shadow-md cursor-pointer" height="160" src="https://github.com/ALMASexclusive/foto1/blob/6ec5375854e1e329cc597e7cac2305aab0463811/Cpanjang13.jpeg?raw=true" width="160" onclick="zoomImage(this.src)"/>
+        <h2 class="text-sm text-black product-title mb-4">Cincin Lapis Emas Kuning Panjang Model Bunga 4 Tangkai</h2>
+        <p class="text-orange-600 font-bold mt-2 mb-4">Rp 32.000</p>
+        <p class="text-gray-500">Ongkir 15.000</p>
+        <p class="text-gray-500">COD bayar nanti</p>
+        <button class="mt-2 bg-orange-600 text-white px-1 py-1 text-xs rounded shadow-md hover:bg-orange-500" onclick="addToCart('Cincin Lapis Emas Kuning Panjang Model Bunga 4 Tangkai', 32000)">Tambah ke Keranjang</button>
+        <div class="mt-4 grid grid-cols-2 sm:grid-cols-4 gap-2">
+            <img alt="Additional product image showing a different angle of the product" class="w-20 h-20 object-cover rounded-lg shadow-md cursor-pointer" height="80" src="https://github.com/ALMASexclusive/foto1/blob/6ec5375854e1e329cc597e7cac2305aab0463811/Cpanjang11.jpeg?raw=true" width="80" onclick="zoomImage(this.src)"/>
+            <img alt="Additional product image showing a different angle of the product" class="w-20 h-20 object-cover rounded-lg shadow-md cursor-pointer" height="80" src="https://github.com/ALMASexclusive/foto1/blob/6ec5375854e1e329cc597e7cac2305aab0463811/Cpanjang14.jpeg?raw=true" width="80" onclick="zoomImage(this.src)"/>
+            <img alt="Additional product image showing the product in use" class="w-20 h-20 object-cover rounded-lg shadow-md cursor-pointer" height="80" src="https://github.com/ALMASexclusive/foto1/blob/6ec5375854e1e329cc597e7cac2305aab0463811/Cpanjang16.jpeg?raw=true" width="80" onclick="zoomImage(this.src)"/>
+            <img alt="Additional product image showing the product packaging" class="w-20 h-20 object-cover rounded-lg shadow-md cursor-pointer" height="80" src="https://github.com/ALMASexclusive/foto1/blob/6ec5375854e1e329cc597e7cac2305aab0463811/Cpanjang15.jpeg?raw=true" width="80" onclick="zoomImage(this.src)"/>
+        </div>
+    </div>
+</div>
+</div>
+<!-- Product Section -->
+<div class="w-full max-w-6xl mt-8 grid grid-cols-2 gap-6 px-4 md:grid-cols-3 lg:grid-cols-4" id="product-container">
+    <!-- Product Item -->
+    <div class="border rounded-lg p-4 flex flex-col items-center bg-white shadow-lg transform transition duration-500 hover:scale-105">
+        <img alt="Product image showing a detailed view of the product" class="w-40 h-40 object-cover mb-4 rounded-lg shadow-md cursor-pointer" height="160" src="https://github.com/ALMASexclusive/foto1/blob/6ec5375854e1e329cc597e7cac2305aab0463811/Bunga5.jpeg?raw=true" width="160" onclick="zoomImage(this.src)"/>
+        <h2 class="text-sm text-black product-title mb-4">Gelang kendari Cantik Lapis Emas Model Bunga import</h2>
+        <p class="text-orange-600 font-bold mt-2 mb-4">Rp 60.000</p>
+        <p class="text-gray-500">Ongkir 15.000</p>
+        <p class="text-gray-500">COD bayar nanti</p>
+        <button class="mt-2 bg-orange-600 text-white px-1 py-1 text-xs rounded shadow-md hover:bg-orange-500" onclick="addToCart('Gelang kendari Cantik Lapis Emas Model Bunga import', 60000)">Tambah ke Keranjang</button>
+        <div class="mt-4 grid grid-cols-2 sm:grid-cols-4 gap-2">
+            <img alt="Additional product image showing a different angle of the product" class="w-20 h-20 object-cover rounded-lg shadow-md cursor-pointer" height="80" src="https://github.com/ALMASexclusive/foto1/blob/6ec5375854e1e329cc597e7cac2305aab0463811/Bunga4.jpeg?raw=true" width="80" onclick="zoomImage(this.src)"/>
+            <img alt="Additional product image showing a different angle of the product" class="w-20 h-20 object-cover rounded-lg shadow-md cursor-pointer" height="80" src="https://github.com/ALMASexclusive/foto1/blob/6ec5375854e1e329cc597e7cac2305aab0463811/Bunga3.jpeg?raw=true" width="80" onclick="zoomImage(this.src)"/>
+            <img alt="Additional product image showing the product in use" class="w-20 h-20 object-cover rounded-lg shadow-md cursor-pointer" height="80" src="https://github.com/ALMASexclusive/foto1/blob/6ec5375854e1e329cc597e7cac2305aab0463811/Bunga2.jpeg?raw=true" width="80" onclick="zoomImage(this.src)"/>
+            <img alt="Additional product image showing the product packaging" class="w-20 h-20 object-cover rounded-lg shadow-md cursor-pointer" height="80" src="https://github.com/ALMASexclusive/foto1/blob/6ec5375854e1e329cc597e7cac2305aab0463811/Bunga1.jpeg?raw=true" width="80" onclick="zoomImage(this.src)"/>
+        </div>
+    </div>
+    <div class="border rounded-lg p-4 flex flex-col items-center bg-white shadow-lg transform transition duration-500 hover:scale-105">
+        <img alt="Product image showing a detailed view of the product" class="w-40 h-40 object-cover mb-4 rounded-lg shadow-md cursor-pointer" height="160" src="https://github.com/ALMASexclusive/foto1/blob/6ec5375854e1e329cc597e7cac2305aab0463811/Koin4.jpeg?raw=true" width="160" onclick="zoomImage(this.src)"/>
+        <h2 class="text-sm text-black product-title mb-4">Gelang dengan Cincin Lapis Emas 18k anti karat</h2>
+        <p class="text-orange-600 font-bold mt-2 mb-4">Rp 39.000</p>
+        <p class="text-gray-500">Ongkir 15.000</p>
+        <p class="text-gray-500">COD bayar nanti</p>
+        <button class="mt-2 bg-orange-600 text-white px-1 py-1 text-xs rounded shadow-md hover:bg-orange-500" onclick="addToCart('Gelang dengan Cincin Lapis Emas 18k anti karat', 39000)">Tambah ke Keranjang</button>
+        <div class="mt-4 grid grid-cols-2 sm:grid-cols-4 gap-2">
+            <img alt="Additional product image showing a different angle of the product" class="w-20 h-20 object-cover rounded-lg shadow-md cursor-pointer" height="80" src="https://github.com/ALMASexclusive/foto1/blob/6ec5375854e1e329cc597e7cac2305aab0463811/Koin3.jpeg?raw=true" width="80" onclick="zoomImage(this.src)"/>
+            <img alt="Additional product image showing a different angle of the product" class="w-20 h-20 object-cover rounded-lg shadow-md cursor-pointer" height="80" src="https://github.com/ALMASexclusive/foto1/blob/6ec5375854e1e329cc597e7cac2305aab0463811/Koin2.jpeg?raw=true" width="80" onclick="zoomImage(this.src)"/>
+            <img alt="Additional product image showing the product in use" class="w-20 h-20 object-cover rounded-lg shadow-md cursor-pointer" height="80" src="https://github.com/ALMASexclusive/foto1/blob/6ec5375854e1e329cc597e7cac2305aab0463811/Koin4.jpeg?raw=true" width="80" onclick="zoomImage(this.src)"/>
+            <img alt="Additional product image showing the product packaging" class="w-20 h-20 object-cover rounded-lg shadow-md cursor-pointer" height="80" src="https://github.com/ALMASexclusive/foto1/blob/6ec5375854e1e329cc597e7cac2305aab0463811/Koin1.jpeg?raw=true" width="80" onclick="zoomImage(this.src)"/>
+        </div>
+    </div>
+    <div class="border rounded-lg p-4 flex flex-col items-center bg-white shadow-lg transform transition duration-500 hover:scale-105">
+        <img alt="Product image showing a detailed view of the product" class="w-40 h-40 object-cover mb-4 rounded-lg shadow-md cursor-pointer" height="160" src="https://github.com/ALMASexclusive/foto1/blob/6ec5375854e1e329cc597e7cac2305aab0463811/Tikar4.jpeg?raw=true" width="160" onclick="zoomImage(this.src)"/>
+        <h2 class="text-sm text-black product-title mb-4">Gelang dengan Cincin lapis Emas Model Tikar Kecil</h2>
+        <p class="text-orange-600 font-bold mt-2 mb-4">Rp 39.000</p>
+        <p class="text-gray-500">Ongkir 15.000</p>
+        <p class="text-gray-500">COD bayar nanti</p>
+        <button class="mt-2 bg-orange-600 text-white px-1 py-1 text-xs rounded shadow-md hover:bg-orange-500" onclick="addToCart('Gelang dengan Cincin lapis Emas Model Tikar Kecil', 39000)">Tambah ke Keranjang</button>
+        <div class="mt-4 grid grid-cols-2 sm:grid-cols-4 gap-2">
+            <img alt="Additional product image showing a different angle of the product" class="w-20 h-20 object-cover rounded-lg shadow-md cursor-pointer" height="80" src="https://github.com/ALMASexclusive/foto1/blob/6ec5375854e1e329cc597e7cac2305aab0463811/Tikar3.jpeg?raw=true" width="80" onclick="zoomImage(this.src)"/>
+            <img alt="Additional product image showing a different angle of the product" class="w-20 h-20 object-cover rounded-lg shadow-md cursor-pointer" height="80" src="https://github.com/ALMASexclusive/foto1/blob/6ec5375854e1e329cc597e7cac2305aab0463811/Tikar2.jpeg?raw=true" width="80" onclick="zoomImage(this.src)"/>
+            <img alt="Additional product image showing the product in use" class="w-20 h-20 object-cover rounded-lg shadow-md cursor-pointer" height="80" src="https://github.com/ALMASexclusive/foto1/blob/6ec5375854e1e329cc597e7cac2305aab0463811/Tikar4.jpeg?raw=true" width="80" onclick="zoomImage(this.src)"/>
+            <img alt="Additional product image showing the product packaging" class="w-20 h-20 object-cover rounded-lg shadow-md cursor-pointer" height="80" src="https://github.com/ALMASexclusive/foto1/blob/6ec5375854e1e329cc597e7cac2305aab0463811/Tikar1.jpeg?raw=true" width="80" onclick="zoomImage(this.src)"/>
+        </div>
+    </div>
+</div>
+</div>
+<!-- Product Section -->
+<div class="w-full max-w-6xl mt-8 grid grid-cols-2 gap-6 px-4 md:grid-cols-3 lg:grid-cols-4" id="product-container">
+    <!-- Product Item -->
+    <div class="border rounded-lg p-4 flex flex-col items-center bg-white shadow-lg transform transition duration-500 hover:scale-105">
+        <img alt="Product image showing a detailed view of the product" class="w-40 h-40 object-cover mb-4 rounded-lg shadow-md cursor-pointer" height="160" src="https://github.com/ALMASexclusive/foto1/blob/6ec5375854e1e329cc597e7cac2305aab0463811/Ksultan13.jpeg?raw=true" width="160" onclick="zoomImage(this.src)"/>
+        <h2 class="text-sm text-black product-title mb-4">Kalung Sultan Lapis emas 3D Mengkilap Luar Dalam Mirip Emas Asli Model Kotak 1</h2>
+        <p class="text-orange-600 font-bold mt-2 mb-4">Rp 78.000</p>
+        <p class="text-gray-500">Ongkir 15.000</p>
+        <p class="text-gray-500">COD bayar nanti</p>
+        <button class="mt-2 bg-orange-600 text-white px-1 py-1 text-xs rounded shadow-md hover:bg-orange-500" onclick="addToCart('Kalung Sultan Lapis emas 3D Mengkilap Luar Dalam', 78000)">Tambah ke Keranjang</button>
+        <div class="mt-4 grid grid-cols-2 sm:grid-cols-4 gap-2">
+            <img alt="Additional product image showing a different angle of the product" class="w-20 h-20 object-cover rounded-lg shadow-md cursor-pointer" height="80" src="https://github.com/ALMASexclusive/foto1/blob/6ec5375854e1e329cc597e7cac2305aab0463811/Ksultan12.jpeg?raw=true" width="80" onclick="zoomImage(this.src)"/>
+            <img alt="Additional product image showing a different angle of the product" class="w-20 h-20 object-cover rounded-lg shadow-md cursor-pointer" height="80" src="https://github.com/ALMASexclusive/foto1/blob/6ec5375854e1e329cc597e7cac2305aab0463811/Ksultan14.jpeg?raw=true" width="80" onclick="zoomImage(this.src)"/>
+            <img alt="Additional product image showing the product in use" class="w-20 h-20 object-cover rounded-lg shadow-md cursor-pointer" height="80" src="https://github.com/ALMASexclusive/foto1/blob/6ec5375854e1e329cc597e7cac2305aab0463811/Ksultan15.jpeg?raw=true" width="80" onclick="zoomImage(this.src)"/>
+            <img alt="Additional product image showing the product packaging" class="w-20 h-20 object-cover rounded-lg shadow-md cursor-pointer" height="80" src="https://github.com/ALMASexclusive/foto1/blob/6ec5375854e1e329cc597e7cac2305aab0463811/Ksultan13.jpeg?raw=true" width="80" onclick="zoomImage(this.src)"/>
+        </div>
+    </div>
+    <div class="border rounded-lg p-4 flex flex-col items-center bg-white shadow-lg transform transition duration-500 hover:scale-105">
+        <img alt="Product image showing a detailed view of the product" class="w-40 h-40 object-cover mb-4 rounded-lg shadow-md cursor-pointer" height="160" src="https://github.com/ALMASexclusive/foto1/blob/6ec5375854e1e329cc597e7cac2305aab0463811/Ksultan21.jpeg?raw=true" width="160" onclick="zoomImage(this.src)"/>
+        <h2 class="text-sm text-black product-title mb-4">Kalung Sultan Lapis emas 3D Mengkilap Luar Dalam model Kotak 2</h2>
+        <p class="text-orange-600 font-bold mt-2 mb-4">Rp 79.000</p>
+        <p class="text-gray-500">Ongkir 15.000</p>
+        <p class="text-gray-500">COD bayar nanti</p>
+        <button class="mt-2 bg-orange-600 text-white px-1 py-1 text-xs rounded shadow-md hover:bg-orange-500" onclick="addToCart('Kalung Sultan Lapis emas 3D Mengkilap Luar Dalam', 79000)">Tambah ke Keranjang</button>
+        <div class="mt-4 grid grid-cols-2 sm:grid-cols-4 gap-2">
+            <img alt="Additional product image showing a different angle of the product" class="w-20 h-20 object-cover rounded-lg shadow-md cursor-pointer" height="80" src="https://github.com/ALMASexclusive/foto1/blob/6ec5375854e1e329cc597e7cac2305aab0463811/Ksultan22.jpeg?raw=true" width="80" onclick="zoomImage(this.src)"/>
+            <img alt="Additional product image showing a different angle of the product" class="w-20 h-20 object-cover rounded-lg shadow-md cursor-pointer" height="80" src="https://github.com/ALMASexclusive/foto1/blob/6ec5375854e1e329cc597e7cac2305aab0463811/Ksultan28.jpeg?raw=true" width="80" onclick="zoomImage(this.src)"/>
+            <img alt="Additional product image showing the product in use" class="w-20 h-20 object-cover rounded-lg shadow-md cursor-pointer" height="80" src="https://github.com/ALMASexclusive/foto1/blob/6ec5375854e1e329cc597e7cac2305aab0463811/Ksultan25.jpeg?raw=true" width="80" onclick="zoomImage(this.src)"/>
+            <img alt="Additional product image showing the product packaging" class="w-20 h-20 object-cover rounded-lg shadow-md cursor-pointer" height="80" src="https://github.com/ALMASexclusive/foto1/blob/6ec5375854e1e329cc597e7cac2305aab0463811/Ksultan27.jpeg?raw=true" width="80" onclick="zoomImage(this.src)"/>
+        </div>
+    </div>
+    <div class="border rounded-lg p-4 flex flex-col items-center bg-white shadow-lg transform transition duration-500 hover:scale-105">
+        <img alt="Product image showing a detailed view of the product" class="w-40 h-40 object-cover mb-4 rounded-lg shadow-md cursor-pointer" height="160" src="https://github.com/ALMASexclusive/foto1/blob/6ec5375854e1e329cc597e7cac2305aab0463811/TikarJumbo2.jpeg?raw=true" width="160" onclick="zoomImage(this.src)"/>
+        <h2 class="text-sm text-black product-title mb-4">Gelang Tikar Lapis Emas Jumbo Kait Nyaman Deail Seperti emas</h2>
+        <p class="text-orange-600 font-bold mt-2 mb-4">Rp 50.000</p>
+        <p class="text-gray-500">Ongkir 15.000</p>
+        <p class="text-gray-500">COD bayar nanti</p>
+        <button class="mt-2 bg-orange-600 text-white px-1 py-1 text-xs rounded shadow-md hover:bg-orange-500" onclick="addToCart('Gelang Tikar Lapis Emas Jumbo Kait Nyaman Detail Seperti emas', 50000)">Tambah ke Keranjang</button>
+        <div class="mt-4 grid grid-cols-2 sm:grid-cols-4 gap-2">
+            <img alt="Additional product image showing a different angle of the product" class="w-20 h-20 object-cover rounded-lg shadow-md cursor-pointer" height="80" src="https://github.com/ALMASexclusive/foto1/blob/6ec5375854e1e329cc597e7cac2305aab0463811/TikarJumbo1.jpeg?raw=true" width="80" onclick="zoomImage(this.src)"/>
+            <img alt="Additional product image showing a different angle of the product" class="w-20 h-20 object-cover rounded-lg shadow-md cursor-pointer" height="80" src="https://github.com/ALMASexclusive/foto1/blob/6ec5375854e1e329cc597e7cac2305aab0463811/TikarJumbo3.jpeg?raw=true" width="80" onclick="zoomImage(this.src)"/>
+            <img alt="Additional product image showing the product in use" class="w-20 h-20 object-cover rounded-lg shadow-md cursor-pointer" height="80" src="https://github.com/ALMASexclusive/foto1/blob/6ec5375854e1e329cc597e7cac2305aab0463811/TikarJumbo4.jpeg?raw=true" width="80" onclick="zoomImage(this.src)"/>
+            <img alt="Additional product image showing the product packaging" class="w-20 h-20 object-cover rounded-lg shadow-md cursor-pointer" height="80" src="https://github.com/ALMASexclusive/foto1/blob/6ec5375854e1e329cc597e7cac2305aab0463811/TikarJumbo5.jpeg?raw=true" width="80" onclick="zoomImage(this.src)"/>
+        </div>
+    </div>
+</div>
+</div>
+<!-- Product Section -->
+<div class="w-full max-w-6xl mt-8 grid grid-cols-2 gap-6 px-4 md:grid-cols-3 lg:grid-cols-4" id="product-container">
+    <!-- Product Item -->
+    <div class="border rounded-lg p-4 flex flex-col items-center bg-white shadow-lg transform transition duration-500 hover:scale-105">
+        <img alt="Product image showing a detailed view of the product" class="w-40 h-40 object-cover mb-4 rounded-lg shadow-md cursor-pointer" height="160" src="https://github.com/ALMASexclusive/foto1/blob/6ec5375854e1e329cc597e7cac2305aab0463811/Ktitanium4.jpeg?raw=true" width="160" onclick="zoomImage(this.src)"/>
+        <h2 class="text-sm text-black product-title mb-4">Kalung Titanium Anti LUntur Anti Karat Dengan Liotin Mutiara Mengkilap</h2>
+        <p class="text-orange-600 font-bold mt-2 mb-4">Rp 29.000</p>
+        <p class="text-gray-500">Ongkir 15.000</p>
+        <p class="text-gray-500">COD bayar nanti</p>
+        <button class="mt-2 bg-orange-600 text-white px-1 py-1 text-xs rounded shadow-md hover:bg-orange-500" onclick="addToCart('Kalung Titanium Anti LUntur Anti Karat Dengan Liotin Mutiara Mengkilap', 29000)">Tambah ke Keranjang</button>
+        <div class="mt-4 grid grid-cols-2 sm:grid-cols-4 gap-2">
+            <img alt="Additional product image showing a different angle of the product" class="w-20 h-20 object-cover rounded-lg shadow-md cursor-pointer" height="80" src="https://github.com/ALMASexclusive/foto1/blob/6ec5375854e1e329cc597e7cac2305aab0463811/Ktitanium3.jpeg?raw=true" width="80" onclick="zoomImage(this.src)"/>
+            <img alt="Additional product image showing a different angle of the product" class="w-20 h-20 object-cover rounded-lg shadow-md cursor-pointer" height="80" src="https://github.com/ALMASexclusive/foto1/blob/6ec5375854e1e329cc597e7cac2305aab0463811/Ktitanium2.jpeg?raw=true" width="80" onclick="zoomImage(this.src)"/>
+            <img alt="Additional product image showing the product in use" class="w-20 h-20 object-cover rounded-lg shadow-md cursor-pointer" height="80" src="https://github.com/ALMASexclusive/foto1/blob/6ec5375854e1e329cc597e7cac2305aab0463811/Ktitanium4.jpeg?raw=true" width="80" onclick="zoomImage(this.src)"/>
+            <img alt="Additional product image showing the product packaging" class="w-20 h-20 object-cover rounded-lg shadow-md cursor-pointer" height="80" src="https://github.com/ALMASexclusive/foto1/blob/6ec5375854e1e329cc597e7cac2305aab0463811/Ktitanium1.jpeg?raw=true" width="80" onclick="zoomImage(this.src)"/>
+        </div>
+    </div>
+    <div class="border rounded-lg p-4 flex flex-col items-center bg-white shadow-lg transform transition duration-500 hover:scale-105">
+        <img alt="Product image showing a detailed view of the product" class="w-40 h-40 object-cover mb-4 rounded-lg shadow-md cursor-pointer" height="160" src="https://github.com/ALMASexclusive/Gelang-Lapis-Emas-Besar-1/blob/8ed2658a31d8358a13f863178d7aec482bab7965/WhatsApp%20Image%202024-11-30%20at%201.30.27%20PM.jpeg?raw=true" width="160" onclick="zoomImage(this.src)"/>
+        <h2 class="text-sm text-black product-title mb-4">Lapis emas 24 karat Gelang Kendari Jumbo + Cincin Jumbo Mirip Emas Asli</h2>
+        <p class="text-orange-600 font-bold mt-2 mb-4">Rp 225.000</p>
+        <p class="text-gray-500">Ongkir 15.000</p>
+        <p class="text-gray-500">COD bayar nanti</p>
+        <button class="mt-2 bg-orange-600 text-white px-1 py-1 text-xs rounded shadow-md hover:bg-orange-500" onclick="addToCart('Gelang Kendari Jumbo + Cincin Jumbo Mirip Emas Asli', 225000)">Tambah ke Keranjang</button>
+        <div class="mt-4 grid grid-cols-2 sm:grid-cols-4 gap-2">
+            <img alt="Additional product image showing a different angle of the product" class="w-20 h-20 object-cover rounded-lg shadow-md cursor-pointer" height="80" src="https://github.com/ALMASexclusive/Gelang-Lapis-Emas-Besar-1/blob/8ed2658a31d8358a13f863178d7aec482bab7965/1set14.jpeg?raw=true" width="80" onclick="zoomImage(this.src)"/>
+            <img alt="Additional product image showing a different angle of the product" class="w-20 h-20 object-cover rounded-lg shadow-md cursor-pointer" height="80" src="https://github.com/ALMASexclusive/Gelang-Lapis-Emas-Besar-1/blob/8ed2658a31d8358a13f863178d7aec482bab7965/1set13.jpeg?raw=true" width="80" onclick="zoomImage(this.src)"/>
+            <img alt="Additional product image showing the product in use" class="w-20 h-20 object-cover rounded-lg shadow-md cursor-pointer" height="80" src="https://github.com/ALMASexclusive/Gelang-Lapis-Emas-Besar-1/blob/8ed2658a31d8358a13f863178d7aec482bab7965/1set12.jpeg?raw=true" width="80" onclick="zoomImage(this.src)"/>
+            <img alt="Additional product image showing the product packaging" class="w-20 h-20 object-cover rounded-lg shadow-md cursor-pointer" height="80" src="https://github.com/ALMASexclusive/Gelang-Lapis-Emas-Besar-1/blob/8ed2658a31d8358a13f863178d7aec482bab7965/1set11.jpeg?raw=true" width="80" onclick="zoomImage(this.src)"/>
+        </div>
+    </div>
+    <div class="border rounded-lg p-4 flex flex-col items-center bg-white shadow-lg transform transition duration-500 hover:scale-105">
+        <img alt="Product image showing a detailed view of the product" class="w-40 h-40 object-cover mb-4 rounded-lg shadow-md cursor-pointer" height="160" src="https://github.com/ALMASexclusive/gelang-lapis-emas-besar-2/blob/1456dfae43b4e808c32998602c69b01faf37f93c/WhatsApp%20Image%202024-11-30%20at%201.30.13%20PM.jpeg?raw=true" width="160" onclick="zoomImage(this.src)"/>
+        <h2 class="text-sm text-black product-title mb-4">Gelang Bangle Lapis Emas Tahan Lama Anti Karat</h2>
+        <p class="text-orange-600 font-bold mt-2 mb-4">Rp 39.000</p>
+        <p class="text-gray-500">Ongkir 15.000</p>
+        <p class="text-gray-500">COD bayar nanti</p>
+        <button class="mt-2 bg-orange-600 text-white px-1 py-1 text-xs rounded shadow-md hover:bg-orange-500" onclick="addToCart('Lapis Emas 24karat 2x sepuh jaminan tahan lama Gelang Kendari Dengan Cincin Jumbo', 220.000)">Tambah ke Keranjang</button>
+        <div class="mt-4 grid grid-cols-2 sm:grid-cols-4 gap-2">
+            <img alt="Additional product image showing a different angle of the product" class="w-20 h-20 object-cover rounded-lg shadow-md cursor-pointer" height="80" src="https://github.com/ALMASexclusive/gelang-lapis-emas-besar-2/blob/1456dfae43b4e808c32998602c69b01faf37f93c/WhatsApp%20Image%202024-11-30%20at%201.30.23%20PM.jpeg?raw=true" width="80" onclick="zoomImage(this.src)"/>
+            <img alt="Additional product image showing a different angle of the product" class="w-20 h-20 object-cover rounded-lg shadow-md cursor-pointer" height="80" src="https://github.com/ALMASexclusive/gelang-lapis-emas-besar-2/blob/1456dfae43b4e808c32998602c69b01faf37f93c/WhatsApp%20Image%202024-11-30%20at%201.30.24%20PM%20(1).jpeg?raw=true" width="80" onclick="zoomImage(this.src)"/>
+            <img alt="Additional product image showing the product in use" class="w-20 h-20 object-cover rounded-lg shadow-md cursor-pointer" height="80" src="https://github.com/ALMASexclusive/gelang-lapis-emas-besar-2/blob/1456dfae43b4e808c32998602c69b01faf37f93c/WhatsApp%20Image%202024-11-30%20at%201.30.13%20PM.jpeg" width="80" onclick="zoomImage(this.src)"/>
+            <img alt="Additional product image showing the product packaging" class="w-20 h-20 object-cover rounded-lg shadow-md cursor-pointer" height="80" src="https://github.com/ALMASexclusive/gelang-lapis-emas-besar-2/blob/1456dfae43b4e808c32998602c69b01faf37f93c/WhatsApp%20Image%202024-11-30%20at%201.30.24%20PM.jpeg?raw=true" width="80" onclick="zoomImage(this.src)"/>
+        </div>
+    </div>
+</div>
+</div>
+<!-- Product Section -->
+<div class="w-full max-w-6xl mt-8 grid grid-cols-2 gap-6 px-4 md:grid-cols-3 lg:grid-cols-4" id="product-container">
+    <!-- Product Item -->
+    <div class="border rounded-lg p-4 flex flex-col items-center bg-white shadow-lg transform transition duration-500 hover:scale-105">
+        <img alt="Product image showing a detailed view of the product" class="w-40 h-40 object-cover mb-4 rounded-lg shadow-md cursor-pointer" height="160" src="https://github.com/ALMASexclusive/gelang-bangle-kecil/blob/5498d499d8f146a406c296e80a39c16aeb428b78/WhatsApp%20Image%202024-11-30%20at%201.30.07%20PM.jpeg?raw=true" width="160" onclick="zoomImage(this.src)"/>
+        <h2 class="text-sm text-black product-title mb-4">Lapis Emas 24K Kuning Gelang Bangle Lapis Emas di jamin Tahan Lama Anti Karat</h2>
+        <p class="text-orange-600 font-bold mt-2 mb-4">Rp 95.000</p>
+        <p class="text-gray-500">Ongkir 15.000</p>
+        <p class="text-gray-500">COD bayar nanti</p>
+        <button class="mt-2 bg-orange-600 text-white px-1 py-1 text-xs rounded shadow-md hover:bg-orange-500" onclick="addToCart('Lapis Emas 24K Kuning Gelang Bangle Lapis Emas di jamin Tahan Lama Anti Karat', 95000)">Tambah ke Keranjang</button>
+        <div class="mt-4 grid grid-cols-2 sm:grid-cols-4 gap-2">
+            <img alt="Additional product image showing a different angle of the product" class="w-20 h-20 object-cover rounded-lg shadow-md cursor-pointer" height="80" src="https://github.com/ALMASexclusive/gelang-bangle-kecil/blob/5498d499d8f146a406c296e80a39c16aeb428b78/WhatsApp%20Image%202024-11-30%20at%201.30.08%20PM.jpeg?raw=true" width="80" onclick="zoomImage(this.src)"/>
+            <img alt="Additional product image showing a different angle of the product" class="w-20 h-20 object-cover rounded-lg shadow-md cursor-pointer" height="80" src="https://github.com/ALMASexclusive/gelang-bangle-kecil/blob/5498d499d8f146a406c296e80a39c16aeb428b78/WhatsApp%20Image%202024-11-30%20at%201.30.08%20PM%20(2).jpeg" width="80" onclick="zoomImage(this.src)"/>
+            <img alt="Additional product image showing the product in use" class="w-20 h-20 object-cover rounded-lg shadow-md cursor-pointer" height="80" src="https://github.com/ALMASexclusive/foto/blob/daf021afb0b32de7322a103b5c10df66861758d7/bangle1.jpeg?raw=true" width="80" onclick="zoomImage(this.src)"/>
+            <img alt="Additional product image showing the product packaging" class="w-20 h-20 object-cover rounded-lg shadow-md cursor-pointer" height="80" src="https://github.com/ALMASexclusive/gelang-bangle-kecil/blob/5498d499d8f146a406c296e80a39c16aeb428b78/WhatsApp%20Image%202024-11-30%20at%201.30.08%20PM%20(1).jpeg?raw=true" width="80" onclick="zoomImage(this.src)"/>
+        </div>
+    </div>
+    <div class="border rounded-lg p-4 flex flex-col items-center bg-white shadow-lg transform transition duration-500 hover:scale-105">
+        <img alt="Product image showing a detailed view of the product" class="w-40 h-40 object-cover mb-4 rounded-lg shadow-md cursor-pointer" height="160" src="https://github.com/ALMASexclusive/Gelang-Bangle-1/blob/41daf4a2c4a545fe2296720587466d9fef125807/WhatsApp%20Image%202024-11-30%20at%201.29.43%20PM.jpeg?raw=true" width="160" onclick="zoomImage(this.src)"/>
+        <h2 class="text-sm text-black product-title mb-4">Full lapis emas 24k tahan lama di jamin Gelang Bangle Lapis Emas Jumbo</h2>
+        <p class="text-orange-600 font-bold mt-2 mb-4">Rp 120.000</p>
+        <p class="text-gray-500">Ongkir 15.000</p>
+        <p class="text-gray-500">COD bayar nanti</p>
+        <button class="mt-2 bg-orange-600 text-white px-1 py-1 text-xs rounded shadow-md hover:bg-orange-500" onclick="addToCart('Full lapis emas 24k tahan lama di jamin Gelang Bangle Lapis Emas Jumbo', 120000)">Tambah ke Keranjang</button>
+        <div class="mt-4 grid grid-cols-2 sm:grid-cols-4 gap-2">
+            <img alt="Additional product image showing a different angle of the product" class="w-20 h-20 object-cover rounded-lg shadow-md cursor-pointer" height="80" src="https://github.com/ALMASexclusive/Gelang-Bangle-1/blob/41daf4a2c4a545fe2296720587466d9fef125807/WhatsApp%20Image%202024-11-30%20at%201.29.48%20PM.jpeg?raw=true" width="80" onclick="zoomImage(this.src)"/>
+            <img alt="Additional product image showing a different angle of the product" class="w-20 h-20 object-cover rounded-lg shadow-md cursor-pointer" height="80" src="https://github.com/ALMASexclusive/Gelang-Bangle-1/blob/41daf4a2c4a545fe2296720587466d9fef125807/WhatsApp%20Image%202024-11-30%20at%201.29.48%20PM%20(1).jpeg?raw=true" width="80" onclick="zoomImage(this.src)"/>
+            <img alt="Additional product image showing the product in use" class="w-20 h-20 object-cover rounded-lg shadow-md cursor-pointer" height="80" src="https://github.com/ALMASexclusive/Gelang-Bangle-1/blob/41daf4a2c4a545fe2296720587466d9fef125807/WhatsApp%20Image%202024-11-30%20at%201.29.44%20PM.jpeg?raw=true" width="80" onclick="zoomImage(this.src)"/>
+            <img alt="Additional product image showing the product packaging" class="w-20 h-20 object-cover rounded-lg shadow-md cursor-pointer" height="80" src="https://github.com/ALMASexclusive/Gelang-Bangle-1/blob/41daf4a2c4a545fe2296720587466d9fef125807/WhatsApp%20Image%202024-11-30%20at%201.29.44%20PM%20(1).jpeg?raw=true" width="80" onclick="zoomImage(this.src)"/>
+        </div>
+    </div>
+</div>
+<html>
+<head>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"></link>
+</head>
+<body class="bg-gray-100">
+    <div class="w-full max-w-6xl mt-8 px-4" id="cart-section">
+        <div class="border rounded-lg p-4 bg-white shadow-lg">
+            <h2 class="text-lg font-semibold text-gray-800">Keranjang</h2>
+            <div class="mt-4" id="cart-container">
+                <!-- Cart items will be added here dynamically -->
+            </div>
+        </div>
+    </div>
+
+    <div class="w-full max-w-6xl mt-8 px-4 hidden" id="address-form">
+        <div class="border rounded-lg p-4 bg-white shadow-lg">
+            <h2 class="text-lg font-semibold text-gray-800">Isi Alamat ta' disini kak</h2>
+            <form class="mt-4">
+                <div class="mb-4">
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="name">Nama</label>
+                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="name" placeholder="Nama" type="text"/>
+                </div>
+                <div class="mb-4">
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="province">Provinsi</label>
+                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="province" placeholder="Provinsi" type="text"/>
+                </div>
+                <div class="mb-4">
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="regency">Kabupaten</label>
+                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="regency" placeholder="Kabupaten" type="text"/>
+                </div>
+                <div class="mb-4">
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="city">Kota</label>
+                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="city" placeholder="Kota" type="text"/>
+                </div>
+                <div class="mb-4">
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="street">Nama Jalan</label>
+                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="street" placeholder="Nama Jalan" type="text"/>
+                </div>
+                <div class="mb-4">
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="house-details">Detail Rumah</label>
+                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="house-details" placeholder="Detail Rumah" type="text"/>
+                </div>
+                <div class="flex items-center justify-between">
+                    <button class="bg-orange-600 hover:bg-orange-500 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" onclick="sendToWhatsApp()" type="button">Kirim</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Thank You Message -->
+    <div class="w-full max-w-6xl mt-8 px-4">
+        <div class="border rounded-lg p-4 bg-white shadow-lg text-center">
+            <p class="text-lg font-semibold text-gray-800">Terimakasih sudah order!</p>
+        </div>
+    </div>
+</body>
+</html>
